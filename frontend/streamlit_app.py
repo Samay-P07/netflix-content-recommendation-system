@@ -34,15 +34,14 @@ def get_client() -> CineMatchClient:
 
 client = get_client()
 
-# Initialize session state variables
-if "selected_title_query" not in st.session_state:
-    st.session_state["selected_title_query"] = "Inception"
-
-if "catalog_page" not in st.session_state:
-    st.session_state["catalog_page"] = 1
-
-
 def main():
+    # Ensure session state variables are initialized for this run
+    if "selected_title_query" not in st.session_state:
+        st.session_state["selected_title_query"] = "Inception"
+
+    if "catalog_page" not in st.session_state:
+        st.session_state["catalog_page"] = 1
+
     # Sidebar Navigation & Platform Status
     with st.sidebar:
         st.markdown("""
@@ -100,7 +99,7 @@ def main():
         with col_input:
             search_val = st.text_input(
                 "Search or choose a title:",
-                value=st.session_state["selected_title_query"],
+                value=st.session_state.get("selected_title_query", "Inception"),
                 placeholder="Search Inception, Stranger Things, Narcos, Breaking Bad...",
                 label_visibility="collapsed"
             )
@@ -113,7 +112,7 @@ def main():
             st.session_state["selected_title_query"] = search_val
             client.record_search(search_val)
 
-        active_title = st.session_state["selected_title_query"]
+        active_title = st.session_state.get("selected_title_query", "Inception")
         hero_details = client.get_title_details(active_title)
 
         # 1. Hero Spotlight Featured Banner
@@ -199,7 +198,7 @@ def main():
 
         c_t, c_f, c_k = st.columns([3, 1.2, 1.2])
         with c_t:
-            query_t = st.text_input("Enter Query Title:", value=st.session_state["selected_title_query"])
+            query_t = st.text_input("Enter Query Title:", value=st.session_state.get("selected_title_query", "Inception"))
         with c_f:
             filter_fmt = st.selectbox("Format Filter", ["All", "Movie", "TV Show"], key="rec_fmt_sel")
         with c_k:
@@ -276,7 +275,7 @@ def main():
             type=q_type,
             genre=q_genre,
             sort_by=sort_dict.get(q_sort, "title_asc"),
-            page=st.session_state["catalog_page"],
+            page=st.session_state.get("catalog_page", 1),
             page_size=page_size
         )
 
