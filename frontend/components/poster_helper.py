@@ -1,59 +1,119 @@
 """
 Poster and Visual Artwork Helper for CineMatch
-Provides curated high-resolution backdrop art for popular titles
-and stylized genre-gradient visual posters for all catalog items.
+Fetches real official movie posters from OMDb/IMDb API for every catalog title,
+with multi-tier caching (memory + local JSON file) and fallback art.
 """
 
+import os
+import json
+import logging
 import hashlib
-from typing import Dict, Any
+from typing import Dict, Any, Optional
+import httpx
 
-# Curated high-resolution cinematic artwork for popular catalogue titles
+logger = logging.getLogger(__name__)
+
+CACHE_FILE = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
+    "data",
+    "posters_cache.json"
+)
+
+# In-memory fast cache
+_POSTER_MEMORY_CACHE: Dict[str, str] = {}
+
+# Load persistent disk cache if exists
+if os.path.exists(CACHE_FILE):
+    try:
+        with open(CACHE_FILE, "r", encoding="utf-8") as f:
+            _POSTER_MEMORY_CACHE = json.load(f)
+    except Exception as e:
+        logger.warning("Could not load posters_cache.json: %s", e)
+
+
+def _save_disk_cache():
+    try:
+        with open(CACHE_FILE, "w", encoding="utf-8") as f:
+            json.dump(_POSTER_MEMORY_CACHE, f)
+    except Exception as e:
+        logger.warning("Could not persist posters_cache.json: %s", e)
+
+
+# Curated high-resolution cinematic artwork fallback
 CURATED_POSTERS = {
-    "inception": "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=600&auto=format&fit=crop&q=80",
-    "stranger things": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=600&auto=format&fit=crop&q=80",
-    "interstellar": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&auto=format&fit=crop&q=80",
-    "the dark knight": "https://images.unsplash.com/photo-1509248961158-e54f6934749c?w=600&auto=format&fit=crop&q=80",
-    "the witcher": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=600&auto=format&fit=crop&q=80",
-    "narcos": "https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=600&auto=format&fit=crop&q=80",
-    "breaking bad": "https://images.unsplash.com/photo-1533227268428-f9ed0900fb3b?w=600&auto=format&fit=crop&q=80",
-    "black mirror": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&auto=format&fit=crop&q=80",
-    "the matrix": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&auto=format&fit=crop&q=80",
-    "titanic": "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&auto=format&fit=crop&q=80",
-    "joker": "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=600&auto=format&fit=crop&q=80",
-    "peaky blinders": "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=600&auto=format&fit=crop&q=80",
-    "the queen's gambit": "https://images.unsplash.com/photo-1529699211952-734e80c4d42b?w=600&auto=format&fit=crop&q=80",
-    "dark": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=600&auto=format&fit=crop&q=80",
-    "money heist": "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=600&auto=format&fit=crop&q=80",
-    "lucifer": "https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=600&auto=format&fit=crop&q=80",
-    "crown": "https://images.unsplash.com/photo-1544717305-2782549b5136?w=600&auto=format&fit=crop&q=80",
-    "squid game": "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=600&auto=format&fit=crop&q=80",
-    "avengers": "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=600&auto=format&fit=crop&q=80"
+    "inception": "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_QL75_UX380_CR0,0,380,562_.jpg",
+    "stranger things": "https://m.media-amazon.com/images/M/MV5BMjEzMDAxOTUyMV5BMl5BanBnXkFtZTgwNzAxMzYzOTE@._V1_QL75_UX380_CR0,0,380,562_.jpg",
+    "interstellar": "https://m.media-amazon.com/images/M/MV5BYzdjMDAxZGItMjI2My00ODA1LTlkNzItOWFjMDU5ZDJlYWY3XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
+    "the dark knight": "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_QL75_UX380_CR0,0,380,562_.jpg",
+    "the witcher": "https://m.media-amazon.com/images/M/MV5BN2FiOWU4YzYtMzZiOS00MzcyLTlkOGEtKQ@@._V1_QL75_UX380_CR0,0,380,562_.jpg",
+    "narcos": "https://m.media-amazon.com/images/M/MV5BNmFjODU3YzgtMGUwNC00ZGI3LWFkZjQtMjkxZDc3NmQ1MzFiXkEyXkFqcGc@._V1_QL75_UX380_CR0,4,380,562_.jpg",
+    "breaking bad": "https://m.media-amazon.com/images/M/MV5BMzU5ZGYzNmQtMTdhYy00OGRiLTg0NmQtYjVjNzliZTg1ZGE4XkEyXkFqcGc@._V1_QL75_UX380_CR0,4,380,562_.jpg",
+    "peaky blinders": "https://m.media-amazon.com/images/M/MV5BM2NlYTFlNmYtOTlhNi00N2Y4LWJmOGEtZGU1MTMzNzczNDY5XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg"
 }
 
-# Thematic color palettes for dynamic poster artwork
 GENRE_PALETTES = [
-    ("linear-gradient(135deg, #0f2027, #203a43, #2c5364)", "#00d2ff"), # Sci-Fi/Fantasy
-    ("linear-gradient(135deg, #1f1c2c, #928dab)", "#e50914"),           # Drama/Noir
-    ("linear-gradient(135deg, #232526, #414345)", "#ff9900"),           # Action/Thriller
-    ("linear-gradient(135deg, #141e30, #243b55)", "#00b4d8"),           # Adventure
-    ("linear-gradient(135deg, #3a1c71, #d76d77, #ffaf7b)", "#ff4b4b"), # Romance/Comedy
-    ("linear-gradient(135deg, #000000, #434343)", "#ff2a2a"),           # Horror/Crime
-    ("linear-gradient(135deg, #114357, #f29492)", "#ffa07a"),           # Indie/Doc
+    ("linear-gradient(135deg, #0f2027, #203a43, #2c5364)", "#00d2ff"),
+    ("linear-gradient(135deg, #1f1c2c, #928dab)", "#e50914"),
+    ("linear-gradient(135deg, #232526, #414345)", "#ff9900"),
+    ("linear-gradient(135deg, #141e30, #243b55)", "#00b4d8"),
+    ("linear-gradient(135deg, #3a1c71, #d76d77, #ffaf7b)", "#ff4b4b"),
+    ("linear-gradient(135deg, #000000, #434343)", "#ff2a2a")
 ]
 
 
-def get_poster_visual(title: str, genre: str = "") -> Dict[str, str]:
+def fetch_real_movie_poster(title: str, year: Optional[int] = None) -> Optional[str]:
     """
-    Returns an image URL if curated, or a CSS gradient background with accent color.
+    Fetches real official movie poster using OMDb API with caching.
     """
-    norm_title = title.strip().lower()
+    clean_title = title.strip()
+    cache_key = f"{clean_title.lower()}_{year or ''}"
 
-    # 1. Exact or partial curated match
-    for key, img_url in CURATED_POSTERS.items():
-        if key in norm_title:
-            return {"type": "image", "url": img_url, "gradient": "", "accent": "#e50914"}
+    # Check cache first
+    if cache_key in _POSTER_MEMORY_CACHE:
+        cached_url = _POSTER_MEMORY_CACHE[cache_key]
+        if cached_url and cached_url != "N/A":
+            return cached_url
 
-    # 2. Deterministic genre/title hash gradient
+    # Check curated dictionary
+    title_lower = clean_title.lower()
+    for k, u in CURATED_POSTERS.items():
+        if k in title_lower:
+            _POSTER_MEMORY_CACHE[cache_key] = u
+            return u
+
+    # Fetch from OMDb API
+    params = {"t": clean_title, "apikey": "trilogy"}
+    if year:
+        params["y"] = int(year)
+
+    try:
+        with httpx.Client(timeout=2.5) as http_client:
+            r = http_client.get("https://www.omdbapi.com/", params=params)
+            if r.status_code == 200:
+                data = r.json()
+                poster = data.get("Poster")
+                if poster and poster != "N/A":
+                    _POSTER_MEMORY_CACHE[cache_key] = poster
+                    # Save every 5 new cached items
+                    if len(_POSTER_MEMORY_CACHE) % 5 == 0:
+                        _save_disk_cache()
+                    return poster
+    except Exception:
+        pass
+
+    return None
+
+
+def get_poster_visual(title: str, genre: str = "", year: Optional[int] = None) -> Dict[str, str]:
+    """
+    Returns the real official poster if available, or artistic genre-gradient.
+    """
+    # 1. Try real poster
+    real_poster = fetch_real_movie_poster(title, year)
+    if real_poster:
+        return {"type": "image", "url": real_poster, "gradient": "", "accent": "#e50914"}
+
+    # 2. Dynamic gradient fallback
     hash_val = int(hashlib.md5((title + genre).encode('utf-8')).hexdigest(), 16)
     palette_idx = hash_val % len(GENRE_PALETTES)
     grad, accent = GENRE_PALETTES[palette_idx]

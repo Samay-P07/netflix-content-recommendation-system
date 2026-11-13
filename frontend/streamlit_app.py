@@ -117,7 +117,7 @@ def main():
 
         # 1. Hero Spotlight Featured Banner
         if hero_details:
-            st.markdown(render_hero_spotlight(hero_details), unsafe_allow_html=True)
+            st.html(render_hero_spotlight(hero_details))
 
         # 2. Recommended for You Section (Grid of 4 cards per row)
         st.markdown("""
@@ -148,10 +148,7 @@ def main():
                         is_saved = show_id in saved_titles
 
                         with col:
-                            st.markdown(
-                                render_movie_card(rec_item, is_recommendation=True),
-                                unsafe_allow_html=True
-                            )
+                            st.html(render_movie_card(rec_item, is_recommendation=True))
                             # Card Action buttons
                             bcol1, bcol2 = st.columns(2)
                             with bcol1:
@@ -184,7 +181,7 @@ def main():
             cols_pop = st.columns(4)
             for i, p_item in enumerate(popular_picks["items"]):
                 with cols_pop[i]:
-                    st.markdown(render_movie_card(p_item), unsafe_allow_html=True)
+                    st.html(render_movie_card(p_item))
                     if st.button("Find Similar ➔", key=f"pop_btn_{p_item['show_id']}", use_container_width=True):
                         st.session_state["selected_title_query"] = p_item["title"]
                         st.rerun()
@@ -218,7 +215,7 @@ def main():
             q_det = client.get_title_details(recs.get("query_id", query_t))
             if q_det:
                 st.markdown(f"### Query Item: **{recs.get('query_title')}**")
-                st.markdown(render_hero_spotlight(q_det), unsafe_allow_html=True)
+                st.html(render_hero_spotlight(q_det))
 
             st.caption(f"ℹ️ {recs.get('disclaimer')}")
 
@@ -230,10 +227,7 @@ def main():
                     if idx < len(items):
                         r_item = items[idx]
                         with c:
-                            st.markdown(
-                                render_movie_card(r_item, is_recommendation=True),
-                                unsafe_allow_html=True
-                            )
+                            st.html(render_movie_card(r_item, is_recommendation=True))
                             if st.button(f"Recommend '{r_item['title']}' ➔", key=f"rec_page_btn_{r_item['show_id']}", use_container_width=True):
                                 st.session_state["selected_title_query"] = r_item["title"]
                                 st.rerun()
@@ -294,7 +288,7 @@ def main():
                     if idx < len(items_list):
                         item = items_list[idx]
                         with col:
-                            st.markdown(render_movie_card(item), unsafe_allow_html=True)
+                            st.html(render_movie_card(item))
                             if st.button("Find Similar ➔", key=f"cat_browse_{item['show_id']}", use_container_width=True):
                                 st.session_state["selected_title_query"] = item["title"]
                                 st.toast(f"Switching to {item['title']}...")
@@ -388,7 +382,7 @@ def main():
                     item = client.get_title_details(sid)
                     if item:
                         with cols_fav[idx % 3]:
-                            st.markdown(render_movie_card(item), unsafe_allow_html=True)
+                            st.html(render_movie_card(item))
                             if st.button("Remove ✕", key=f"remove_fav_{sid}", use_container_width=True):
                                 client.remove_saved_title(sid)
                                 st.toast(f"Removed '{item['title']}' from Watchlist.")
