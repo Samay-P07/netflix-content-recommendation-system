@@ -130,3 +130,33 @@ def test_get_title_details(recommender):
     assert details['title'] == 'The Dark Knight'
     assert details['director'] == 'Christopher Nolan'
     assert details['type'] == 'Movie'
+
+
+def test_find_title_index_by_show_id(recommender):
+    idx, title = recommender.find_title_index('s1')
+    assert title == 'Stranger Things'
+    assert idx == 0
+
+    idx2, title2 = recommender.find_index_by_id('s3')
+    assert title2 == 'The Dark Knight'
+    assert idx2 == 2
+
+
+def test_find_index_by_id_invalid(recommender):
+    with pytest.raises(KeyError):
+        recommender.find_index_by_id('s99999')
+
+
+def test_recommendation_contains_show_id_and_explanation(recommender):
+    recs = recommender.recommend('s3', top_k=2)  # The Dark Knight
+    assert not recs.empty
+    assert 'show_id' in recs.columns
+    assert 'explanation' in recs.columns
+    assert recs.iloc[0]['show_id'] == 's4'  # Batman Begins
+    assert "Directed by Christopher Nolan" in recs.iloc[0]['explanation'] or "Shares genres" in recs.iloc[0]['explanation']
+
+
+def test_get_title_details_contains_show_id(recommender):
+    details = recommender.get_title_details('s1')
+    assert details['show_id'] == 's1'
+    assert details['title'] == 'Stranger Things'
