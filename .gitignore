@@ -51,3 +51,7 @@ htmlcov/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Local SQLite database files
+*.db
+*.sqlite3

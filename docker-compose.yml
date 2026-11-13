@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: cinematch_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-cinematch_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cinematch_password}
+      POSTGRES_DB: ${POSTGRES_DB:-cinematch}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cinematch_user} -d ${POSTGRES_DB:-cinematch}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cinematch_api
+    restart: unless-stopped
+    command: ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"]
+    ports:
+      - "8000:8000"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8000
+      - POSTGRES_USER=${POSTGRES_USER:-cinematch_user}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-cinematch_password}
+      - POSTGRES_DB=${POSTGRES_DB:-cinematch}
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - DATABASE_URL=postgresql+psycopg2://${POSTGRES_USER:-cinematch_user}:${POSTGRES_PASSWORD:-cinematch_password}@db:5432/${POSTGRES_DB:-cinematch}
+      - DATA_PATH=data/Dataset.csv
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cinematch_web
+    restart: unless-stopped
+    command: ["streamlit", "run", "app.py", "--server.port", "8501", "--server.address", "0.0.0.0", "--server.headless", "true"]
+    ports:
+      - "8501:8501"
+    environment:
+      - BACKEND_URL=http://api:8000
+    depends_on:
+      - api
+
+volumes:
+  postgres_data:
+    driver: local
