@@ -26,8 +26,9 @@
 
     <div class="nav-right">
       <div class="search-box">
-        <span class="search-icon">🔍</span>
-        <input type="text" id="searchInput" class="search-input" placeholder="Search Inception, Squid Game, Narcos..." />
+        <span class="search-icon" id="searchIcon" style="cursor: pointer;">🔍</span>
+        <input type="text" id="searchInput" class="search-input" placeholder="Search Inception, Squid Game, Narcos..." autocomplete="off" />
+        <div class="search-suggestions" id="searchSuggestions"></div>
       </div>
 
       <button class="btn-watchlist-nav" onclick="openWatchlistModal()">
@@ -56,8 +57,8 @@
     <!-- Section 1: AI Recommendations (Strict Uniform Grid) -->
     <section id="recsSection">
       <div class="section-title-wrap">
-        <h2 class="section-title">✨ Recommended for You (AI Metadata Match)</h2>
-        <span class="section-subtitle">Ranked by Cosine Similarity &amp; Sublinear TF-IDF</span>
+        <h2 class="section-title" id="recsTitle">✨ Recommended for You (AI Metadata Match)</h2>
+        <span class="section-subtitle" id="recsSubtitle">Ranked by Cosine Similarity &amp; Sublinear TF-IDF</span>
       </div>
       <div class="movie-grid" id="recsGrid">
         <!-- Rendered dynamically by app.js -->

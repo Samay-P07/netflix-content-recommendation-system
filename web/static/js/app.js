@@ -21,6 +21,10 @@ const recsGrid = document.getElementById("recsGrid");
 const popularGrid = document.getElementById("popularGrid");
 const catalogGrid = document.getElementById("catalogGrid");
 const searchInput = document.getElementById("searchInput");
+const searchSuggestions = document.getElementById("searchSuggestions");
+const searchIcon = document.getElementById("searchIcon");
+const recsTitle = document.getElementById("recsTitle");
+const recsSubtitle = document.getElementById("recsSubtitle");
 const genreFilter = document.getElementById("genreFilter");
 const typeFilter = document.getElementById("typeFilter");
 const sortFilter = document.getElementById("sortFilter");
@@ -256,11 +260,51 @@ async function loadGenres() {
   }
 }
 
-// 6. Action: Select Title & Run Recommendation
+// 6. Action: Execute Search and Scroll Directly to Recommendations Section
+window.executeSearchAndScroll = async function(title) {
+  if (!title || !title.trim()) return;
+  const cleanTitle = title.trim();
+  searchInput.value = cleanTitle;
+  if (searchSuggestions) {
+    searchSuggestions.classList.remove("show");
+  }
+
+  // 1. Update Hero Spotlight
+  loadHeroSpotlight(cleanTitle);
+
+  // 2. Update Recommendation Section Headings
+  if (recsTitle) {
+    recsTitle.innerHTML = `✨ Recommended for You — Based on "${escapeHtml(cleanTitle)}"`;
+  }
+  if (recsSubtitle) {
+    recsSubtitle.innerHTML = `Ranked by Cosine Similarity & TF-IDF vectors matched against "${escapeHtml(cleanTitle)}"`;
+  }
+
+  const scrollToRecs = () => {
+    const recsSection = document.getElementById("recsSection");
+    if (recsSection) {
+      const navOffset = 80;
+      const y = recsSection.getBoundingClientRect().top + window.pageYOffset - navOffset;
+      window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
+    }
+  };
+
+  // Scroll immediately so user sees the section scrolling right away
+  scrollToRecs();
+
+  // 3. Load Recommendations
+  await loadRecommendations(cleanTitle);
+
+  // Scroll again once cards are injected to lock perfect alignment
+  setTimeout(scrollToRecs, 150);
+
+  // Also sync catalog filter
+  state.catalogPage = 1;
+  loadCatalog();
+};
+
 window.selectAndRecommend = function(title) {
-  loadHeroSpotlight(title);
-  loadRecommendations(title);
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  executeSearchAndScroll(title);
 };
 
 // 7. Watchlist Toggle
@@ -388,18 +432,83 @@ window.closeModal = function() {
   modalBackdrop.classList.remove("open");
 };
 
-// Search Debounce Event
+// Search Autocomplete & Instant Dropdown Suggestions
 let searchTimer = null;
+let currentSuggestions = [];
+
 searchInput.addEventListener("input", () => {
   clearTimeout(searchTimer);
-  searchTimer = setTimeout(() => {
+  const q = searchInput.value.trim();
+
+  if (q.length < 2) {
+    if (searchSuggestions) searchSuggestions.classList.remove("show");
     state.catalogPage = 1;
-    const query = searchInput.value.trim();
-    if (query.length >= 3) {
-      loadRecommendations(query);
-    }
     loadCatalog();
-  }, 350);
+    return;
+  }
+
+  searchTimer = setTimeout(async () => {
+    state.catalogPage = 1;
+    loadCatalog();
+
+    try {
+      const res = await fetch(`${API_BASE}/titles/search?q=${encodeURIComponent(q)}&limit=6`);
+      if (!res.ok) return;
+      const data = await res.json();
+      currentSuggestions = data.items || [];
+
+      if (currentSuggestions.length > 0 && searchSuggestions) {
+        searchSuggestions.innerHTML = currentSuggestions.map((item, idx) => `
+          <div class="suggestion-item" data-idx="${idx}" onclick="executeSearchAndScroll('${escapeHtml(item.title)}')">
+            <div class="suggestion-left">
+              <span>🎬</span>
+              <span class="suggestion-title">${escapeHtml(item.title)}</span>
+            </div>
+            <span class="suggestion-badge">${escapeHtml(item.type)} • ${escapeHtml(item.release_year)}</span>
+          </div>
+        `).join("");
+        searchSuggestions.classList.add("show");
+      } else if (searchSuggestions) {
+        searchSuggestions.classList.remove("show");
+      }
+    } catch (e) {}
+  }, 200);
+});
+
+// Handle Enter key on Search Input: Directly go to Recommended Movies
+searchInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    const q = searchInput.value.trim();
+    if (q) {
+      if (currentSuggestions.length > 0) {
+        executeSearchAndScroll(currentSuggestions[0].title);
+      } else {
+        executeSearchAndScroll(q);
+      }
+    }
+  }
+});
+
+// Handle Search Icon click
+if (searchIcon) {
+  searchIcon.addEventListener("click", () => {
+    const q = searchInput.value.trim();
+    if (q) {
+      if (currentSuggestions.length > 0) {
+        executeSearchAndScroll(currentSuggestions[0].title);
+      } else {
+        executeSearchAndScroll(q);
+      }
+    }
+  });
+}
+
+// Close suggestions dropdown when clicking outside
+document.addEventListener("click", (e) => {
+  if (searchSuggestions && !e.target.closest(".search-box")) {
+    searchSuggestions.classList.remove("show");
+  }
 });
 
 // Filter Change Events
