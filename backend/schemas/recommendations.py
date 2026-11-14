@@ -16,6 +16,7 @@ class RecommendationItem(BaseModel):
     similarity_percentage: int = Field(..., description="Similarity expressed as 0-100%")
     explanation: str = Field(..., description="Verifiable reason based on shared metadata attributes")
     query_title: str
+    poster_url: Optional[str] = ""
 
 
 class RecommendationsResponse(BaseModel):

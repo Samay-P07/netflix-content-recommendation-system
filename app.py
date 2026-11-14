@@ -1,35 +1,46 @@
 """
 CineMatch Application Entry Point
-Supports running directly via both:
-  1) `python app.py`      (Launches browser and Streamlit server automatically)
-  2) `streamlit run app.py` (Standard Streamlit & Cloud Hosting execution)
+Launches the high-performance, lightweight CineMatch web discovery platform.
+Execution: `python app.py`
 """
 
 import os
 import sys
+import time
+import threading
+import webbrowser
+import uvicorn
 
 # Ensure repository root is on Python module search path
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
 
-def is_running_in_streamlit() -> bool:
-    """Checks whether the script is already running inside Streamlit's runtime."""
+def open_browser_tab(url: str, delay: float = 1.2):
+    """Opens the user's default browser once the server is listening."""
+    time.sleep(delay)
     try:
-        from streamlit.runtime import exists
-        return exists()
+        webbrowser.open(url)
     except Exception:
-        return False
+        pass
+
+
+def main():
+    host = os.getenv("HOST", "127.0.0.1")
+    port = int(os.getenv("PORT", "8000"))
+    url = f"http://{host}:{port}"
+
+    print("=" * 65)
+    print("🎬  CINEMATCH — AI-POWERED MOVIE & TV DISCOVERY PLATFORM")
+    print(f"🚀  Running on: {url}")
+    print("✨  High-Performance Asynchronous Web Application")
+    print("=" * 65)
+
+    # Launch browser automatically on localhost
+    if host in ["127.0.0.1", "localhost"]:
+        threading.Thread(target=open_browser_tab, args=(url,), daemon=True).start()
+
+    uvicorn.run("backend.main:app", host=host, port=port, log_level="info", reload=False)
 
 
 if __name__ == "__main__":
-    if not is_running_in_streamlit():
-        # User executed `python app.py` from terminal!
-        # Automatically launch Streamlit with browser.
-        from streamlit.web import cli as stcli
-        target_file = os.path.abspath(__file__)
-        sys.argv = ["streamlit", "run", target_file]
-        sys.exit(stcli.main())
-    else:
-        # Running under `streamlit run app.py` or Live Cloud Hosting
-        from frontend.streamlit_app import main
-        main()
+    main()

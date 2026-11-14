@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CineMatch — AI-Powered Movie & TV Recommendation Platform</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>" />
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+
+  <!-- Top Sticky Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-left">
+      <a class="brand-logo" href="#">
+        🎬 Cine<span>Match</span>
+      </a>
+      <ul class="nav-links">
+        <li><a class="nav-link active" href="#recsSection">Recommendations</a></li>
+        <li><a class="nav-link" href="#popularSection">Popular</a></li>
+        <li><a class="nav-link" href="#catalogSection">Catalogue Explorer</a></li>
+        <li><a class="nav-link" onclick="openInsightsModal()">Analytics</a></li>
+        <li><a class="nav-link" onclick="openMethodologyModal()">Methodology</a></li>
+      </ul>
+    </div>
+
+    <div class="nav-right">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" class="search-input" placeholder="Search Inception, Stranger Things, Narcos..." />
+      </div>
+
+      <button class="btn-watchlist-nav" onclick="openWatchlistModal()">
+        ❤️ Watchlist <span id="watchlistCount" class="badge-count">0</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero Spotlight Billboard Banner -->
+  <section class="hero-billboard" id="heroBillboard">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-meta-pills">
+        <span class="pill pill-type">FEATURED</span>
+        <span class="pill pill-rating">HD</span>
+        <span class="pill-year">2020</span>
+      </div>
+      <h1 class="hero-title">Loading Spotlight...</h1>
+      <div class="hero-genre">Please wait while the catalogue loads...</div>
+    </div>
+  </section>
+
+  <!-- Main Container -->
+  <main class="main-container">
+
+    <!-- Section 1: AI Recommendations (Strict Uniform Grid) -->
+    <section id="recsSection">
+      <div class="section-title-wrap">
+        <h2 class="section-title">✨ Recommended for You (AI Metadata Match)</h2>
+        <span class="section-subtitle">Ranked by Cosine Similarity &amp; Sublinear TF-IDF</span>
+      </div>
+      <div class="movie-grid" id="recsGrid">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </section>
+
+    <!-- Section 2: Popular Catalogue Highlights -->
+    <section id="popularSection">
+      <div class="section-title-wrap">
+        <h2 class="section-title">🔥 Popular Catalogue Highlights</h2>
+        <span class="section-subtitle">Top curated titles from the 8,786 catalogue</span>
+      </div>
+      <div class="movie-grid" id="popularGrid">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </section>
+
+    <!-- Section 3: Catalogue Explorer & Multi-Filters -->
+    <section id="catalogSection">
+      <div class="section-title-wrap">
+        <h2 class="section-title">🔍 Browse &amp; Filter Full Catalogue</h2>
+        <span id="catalogCountInfo" class="section-subtitle">Loading catalogue...</span>
+      </div>
+
+      <!-- Filter Controls Bar -->
+      <div class="filter-bar">
+        <select id="typeFilter" class="select-ctrl">
+          <option value="All">All Formats</option>
+          <option value="Movie">Movies Only</option>
+          <option value="TV Show">TV Shows Only</option>
+        </select>
+
+        <select id="genreFilter" class="select-ctrl">
+          <option value="All">All Genres</option>
+        </select>
+
+        <select id="sortFilter" class="select-ctrl">
+          <option value="title_asc">Title (A – Z)</option>
+          <option value="title_desc">Title (Z – A)</option>
+          <option value="year_desc">Release Year (Newest First)</option>
+          <option value="year_asc">Release Year (Oldest First)</option>
+        </select>
+
+        <div style="margin-left: auto; display: flex; gap: 8px;">
+          <button id="btnPrevPage" class="btn btn-secondary" style="padding: 0.45rem 0.9rem;" disabled>⬅️ Prev</button>
+          <button id="btnNextPage" class="btn btn-secondary" style="padding: 0.45rem 0.9rem;">Next ➡️</button>
+        </div>
+      </div>
+
+      <div class="movie-grid" id="catalogGrid">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Interactive Modal / Dialog Popup -->
+  <div class="modal-backdrop" id="modalBackdrop" onclick="if(event.target === this) closeModal()">
+    <div class="modal-window">
+      <button class="modal-close-btn" onclick="closeModal()">✕</button>
+      <div class="modal-body" id="modalContent"></div>
+    </div>
+  </div>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

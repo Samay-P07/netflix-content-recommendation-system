@@ -1,0 +1,589 @@
+/* CineMatch — Modern Streaming Discovery Platform CSS (Netflix & Prime Inspired) */
+
+:root {
+  --bg-base: #07090e;
+  --bg-surface: #0e131f;
+  --bg-card: #141c2b;
+  --bg-card-hover: #1b263b;
+  --border-color: #232e42;
+  --border-focus: #e50914;
+  --accent-red: #e50914;
+  --accent-red-glow: rgba(229, 9, 20, 0.4);
+  --accent-cyan: #00d2ff;
+  --accent-gold: #f59f00;
+  --accent-green: #22c55e;
+  --text-main: #ffffff;
+  --text-muted: #94a3b8;
+  --text-sub: #64748b;
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-base);
+  color: var(--text-main);
+  font-family: var(--font-family);
+  line-height: 1.5;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ==========================================================================
+   NAVIGATION BAR
+   ========================================================================== */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem 2.5rem;
+  background: rgba(7, 9, 14, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.3s ease;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.brand-logo {
+  font-size: 1.6rem;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  color: #fff;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.brand-logo span {
+  color: var(--accent-red);
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.4rem;
+  list-style: none;
+}
+
+.nav-link {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: #ffffff;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.search-box {
+  position: relative;
+  width: 280px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.55rem 1rem 0.55rem 2.2rem;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  color: #ffffff;
+  font-size: 0.88rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-input:focus {
+  border-color: var(--accent-red);
+  box-shadow: 0 0 10px var(--accent-red-glow);
+}
+
+.search-icon {
+  position: absolute;
+  left: 0.8rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  pointer-events: none;
+}
+
+.btn-watchlist-nav {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: #fff;
+  padding: 0.45rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+
+.btn-watchlist-nav:hover {
+  border-color: var(--accent-red);
+  color: var(--accent-red);
+}
+
+.badge-count {
+  background-color: var(--accent-red);
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-size: 0.72rem;
+}
+
+/* ==========================================================================
+   HERO BILLBOARD SECTION (SPOTLIGHT FEATURED TITLE)
+   ========================================================================== */
+.hero-billboard {
+  position: relative;
+  min-height: 480px;
+  display: flex;
+  align-items: center;
+  padding: 3rem 4rem;
+  background-size: cover;
+  background-position: center;
+  margin-bottom: 2.5rem;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(7, 9, 14, 0.98) 25%, rgba(7, 9, 14, 0.85) 60%, rgba(7, 9, 14, 0.4) 100%),
+              linear-gradient(0deg, var(--bg-base) 0%, transparent 40%);
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 680px;
+}
+
+.hero-meta-pills {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.pill {
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pill-type { background-color: var(--accent-red); color: #fff; }
+.pill-rating { background-color: rgba(255, 255, 255, 0.15); color: #e2e8f0; }
+.pill-match { background-color: var(--accent-green); color: #fff; }
+.pill-year { color: var(--text-muted); font-weight: 600; font-size: 0.85rem; }
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 0.6rem;
+  color: #ffffff;
+  text-shadow: 0 4px 16px rgba(0,0,0,0.8);
+}
+
+.hero-genre {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--accent-cyan);
+  margin-bottom: 0.8rem;
+}
+
+.hero-desc {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.btn {
+  padding: 0.65rem 1.4rem;
+  border-radius: 6px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background-color: var(--accent-red);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #ff1f2d;
+  box-shadow: 0 4px 16px var(--accent-red-glow);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: #fff;
+}
+
+/* ==========================================================================
+   MAIN CONTENT CONTAINER & SHELVES
+   ========================================================================== */
+.main-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 2.5rem 4rem 2.5rem;
+}
+
+.section-title-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1.2rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.6rem;
+}
+
+.section-title {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-sub);
+}
+
+/* ==========================================================================
+   PERFECT UNIFORM MOVIE CARD GRID (STRICT LEVEL ALIGNMENT)
+   ========================================================================== */
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 22px;
+  align-items: stretch;
+  margin-bottom: 3rem;
+}
+
+.movie-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  height: 100%;
+}
+
+.movie-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--accent-red);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.6), 0 0 16px var(--accent-red-glow);
+  background-color: var(--bg-card-hover);
+}
+
+/* Fixed aspect ratio poster container */
+.card-poster-wrap {
+  position: relative;
+  width: 100%;
+  height: 300px; /* Fixed height guarantees all cards align in a straight horizontal line */
+  background-color: #0b0f19;
+  overflow: hidden;
+}
+
+.card-poster-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.35s ease;
+}
+
+.movie-card:hover .card-poster-img {
+  transform: scale(1.04);
+}
+
+/* Floating overlay badges on top of poster */
+.card-poster-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(7, 9, 14, 0.4) 0%, rgba(7, 9, 14, 0.85) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px;
+  pointer-events: none;
+}
+
+.poster-top-pills {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.match-badge {
+  background-color: rgba(34, 197, 94, 0.9);
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.72rem;
+  padding: 3px 7px;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  align-self: flex-end;
+}
+
+/* Card Body Content with Flex Stretch */
+.card-body {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.card-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-year {
+  font-size: 0.82rem;
+  color: var(--text-sub);
+  font-weight: 600;
+}
+
+.card-genres {
+  font-size: 0.8rem;
+  color: var(--accent-red);
+  font-weight: 600;
+  margin-bottom: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-meta-line {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Verifiable Recommendation Explanation Box */
+.card-explanation-box {
+  background-color: rgba(229, 9, 20, 0.08);
+  border: 1px solid rgba(229, 9, 20, 0.25);
+  border-radius: 6px;
+  padding: 0.45rem 0.65rem;
+  font-size: 0.76rem;
+  color: #e2e8f0;
+  margin-top: auto;
+  margin-bottom: 12px;
+  line-height: 1.35;
+}
+
+.card-btn-row {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-card {
+  flex: 1;
+  padding: 0.45rem 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 6px;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+}
+
+.btn-card-explore {
+  background-color: #1e293b;
+  color: #fff;
+}
+
+.btn-card-explore:hover {
+  background-color: var(--accent-red);
+}
+
+.btn-card-fav {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #e2e8f0;
+}
+
+.btn-card-fav:hover, .btn-card-fav.active {
+  background-color: var(--accent-red);
+  color: #fff;
+}
+
+/* ==========================================================================
+   FILTER CONTROLS BAR (CATALOGUE EXPLORER)
+   ========================================================================== */
+.filter-bar {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  padding: 1rem 1.2rem;
+  border-radius: 10px;
+  margin-bottom: 1.8rem;
+}
+
+.select-ctrl {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: #fff;
+  padding: 0.5rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  outline: none;
+  cursor: pointer;
+}
+
+.select-ctrl:focus {
+  border-color: var(--accent-red);
+}
+
+/* ==========================================================================
+   MODAL / POPUP DIALOG
+   ========================================================================== */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(6px);
+  z-index: 2000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-backdrop.open {
+  display: flex;
+}
+
+.modal-window {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  max-width: 750px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.8);
+  position: relative;
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1.2rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #fff;
+  font-size: 1.2rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close-btn:hover {
+  background: var(--accent-red);
+}
+
+.modal-body {
+  padding: 2rem;
+}
+
+/* ==========================================================================
+   RESPONSIVE QUERIES
+   ========================================================================== */
+@media (max-width: 900px) {
+  .navbar { padding: 0.8rem 1.2rem; }
+  .hero-billboard { padding: 2rem 1.5rem; min-height: 380px; }
+  .hero-title { font-size: 2.2rem; }
+  .search-box { width: 180px; }
+  .main-container { padding: 0 1.2rem 3rem 1.2rem; }
+}
+
+@media (max-width: 600px) {
+  .nav-links { display: none; }
+  .movie-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .card-poster-wrap { height: 240px; }
+}

@@ -11,6 +11,7 @@ class TitleSummary(BaseModel):
     duration: Optional[str] = ""
     listed_in: Optional[str] = ""
     country: Optional[str] = ""
+    poster_url: Optional[str] = ""
 
 
 class TitleDetail(TitleSummary):

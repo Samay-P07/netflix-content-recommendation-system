@@ -10,6 +10,7 @@ import pandas as pd
 from collections import Counter
 
 from backend.core.config import settings
+from backend.services.poster_service import get_poster_url
 from src.data_preprocessing import load_and_preprocess_data
 from src.recommendation_engine import NetflixRecommender
 from backend.schemas.titles import TitleSummary, TitleDetail, PaginatedTitlesResponse, TitleSearchResponse
@@ -62,6 +63,7 @@ class CatalogService:
             return None
         try:
             details = self.recommender.get_title_details(show_id_or_title)
+            poster = get_poster_url(details['title'], details['release_year'], details['listed_in'])
             return TitleDetail(
                 show_id=details['show_id'],
                 title=details['title'],
@@ -71,7 +73,8 @@ class CatalogService:
                 duration=details['duration'],
                 listed_in=details['listed_in'],
                 country=details['country'],
-                director=details['director']
+                director=details['director'],
+                poster_url=poster
             )
         except (KeyError, ValueError):
             return None
@@ -150,7 +153,8 @@ class CatalogService:
                 rating=row.get('rating', ''),
                 duration=row.get('duration', ''),
                 listed_in=row.get('listed_in', ''),
-                country=row.get('country', '')
+                country=row.get('country', ''),
+                poster_url=get_poster_url(row['title'], int(row['release_year']), row.get('listed_in', ''))
             )
             for _, row in page_records.iterrows()
         ]
@@ -183,6 +187,7 @@ class CatalogService:
             rec_items = []
             for _, row in recs_df.iterrows():
                 score = float(row['similarity_score'])
+                poster = get_poster_url(row['title'], int(row['release_year']), row.get('listed_in', ''))
                 rec_items.append(
                     RecommendationItem(
                         show_id=row['show_id'],
@@ -197,7 +202,8 @@ class CatalogService:
                         similarity_score=score,
                         similarity_percentage=int(round(score * 100)),
                         explanation=row['explanation'],
-                        query_title=matched_title
+                        query_title=matched_title,
+                        poster_url=poster
                     )
                 )
 
