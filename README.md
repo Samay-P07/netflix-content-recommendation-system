@@ -1,14 +1,14 @@
 # CineMatch — AI-Powered Movie & TV Recommendation Platform
 
-A production-style content-based movie and TV recommendation platform built with Python, FastAPI, Streamlit, scikit-learn, PostgreSQL, and Docker.
+A production-grade, end-to-end content-based movie and TV recommendation platform built with Python, FastAPI, Vanilla JavaScript/HTML5/CSS3, scikit-learn, PostgreSQL, and Docker.
 
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![Streamlit](https://img.shields.io/badge/Frontend-Streamlit-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io/)
+[![Web UI](https://img.shields.io/badge/Frontend-Ultra--Fast%20Web%20UI-E50914?logo=html5&logoColor=white)](web/templates/index.html)
 [![Machine Learning - TF-IDF](https://img.shields.io/badge/ML-TF--IDF%20%26%20Cosine%20Sim-orange)](https://scikit-learn.org/)
 [![Database - PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL-336791?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![Docker](https://img.shields.io/badge/Containers-Docker%20Compose-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
-[![Tests - 48 Passing](https://img.shields.io/badge/Tests-48%20Passing-success?logo=pytest&logoColor=white)](https://pytest.org/)
+[![Tests - 49 Passing](https://img.shields.io/badge/Tests-49%20Passing-success?logo=pytest&logoColor=white)](https://pytest.org/)
 [![License - MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 ---
@@ -17,7 +17,7 @@ A production-style content-based movie and TV recommendation platform built with
 
 **Tagline:** *Find your next favourite story.*
 
-**CineMatch** helps users discover movies and TV shows from a curated catalogue of 8,786 titles using transparent metadata attributes. Built as an end-to-end, decoupled software engineering and machine learning project, it pairs an asynchronous **FastAPI** backend with an intuitive, cinematic dark **Streamlit** frontend, supported by **PostgreSQL** persistence and **Docker Compose** containerization.
+**CineMatch** helps users discover movies and TV shows from a curated catalogue of 8,786 titles using transparent metadata attributes. Built as an end-to-end, decoupled software engineering and machine learning project, it pairs an asynchronous **FastAPI** backend with a high-performance cinematic streaming web client, supported by **PostgreSQL** persistence and **Docker Compose** containerization.
 
 > **Scope & Disclosure:** CineMatch is an offline discovery tool and educational portfolio project. It does not provide video streaming, does not use private user watch histories or collaborative-filtering algorithms, and is not affiliated with or endorsed by Netflix.
 
@@ -25,15 +25,17 @@ A production-style content-based movie and TV recommendation platform built with
 
 ## ✨ Features
 
-- **Content-Based Discovery:** Recommends top-5 or top-10 mathematically similar titles using TF-IDF feature vectors and instantaneous dot-product cosine similarity.
+- **Content-Based Discovery:** Recommends top mathematically similar titles using TF-IDF feature vectors and instantaneous dot-product cosine similarity.
+- **Smart Autocomplete & Auto-Scroll:** Instant search dropdown with live suggestions; selecting or searching any title automatically scrolls smoothly to the recommendations shelf.
+- **Verified Official Posters:** Multi-tier image resolution delivering crisp Amazon/IMDb artwork for catalog blockbusters and Cory Carson titles, with zero broken image placeholders.
+- **Strict Uniform Row Alignment:** Fixed-aspect ratio posters with strict CSS Grid layout guaranteeing level, straight-line cards across all screen resolutions.
 - **Verifiable Explanations:** Every recommendation includes an explanation based on real catalogue metadata (shared genres, matching director, origin country).
 - **Stable ID & Title Resolution:** Matches titles via exact `show_id` (e.g. `s1`), exact title, substring search, or Levenshtein fuzzy matching.
 - **Self-Exclusion:** The query title is strictly excluded from its own recommendation set.
-- **Browse & Filter Catalogue:** Multi-attribute filtering by content type (Movie / TV Show), 42 distinct genres, release year range, and sorting (A-Z, newest, oldest).
+- **Browse & Filter Catalogue:** Multi-attribute filtering by content type (Movie / TV Show), 42 distinct genres, release year range, and sorting.
 - **Catalogue Insights:** Real-time descriptive analytics on content distribution, top genres, producing countries, and release year trends.
-- **Search History & Bookmarks:** Logs recent search queries and saved favourites in PostgreSQL with Alembic migrations.
-- **Architectural Resilience:** Frontend API client automatically falls back to in-process local execution if the backend server is offline.
-- **Comprehensive Quality Assurance:** 48 automated pytest unit, integration, and API tests with 100% pass rate.
+- **Search History & Bookmarks:** Logs recent search queries and saved favourites in PostgreSQL with SQLite fallback.
+- **Comprehensive Quality Assurance:** 49 automated pytest unit, integration, and API tests with 100% pass rate.
 
 ---
 
@@ -183,13 +185,13 @@ netflix-content-recommendation-system/
 
 3. **Launch the CineMatch Web Application:**
    ```bash
-   streamlit run app.py
+   python app.py
    ```
-   *The application will automatically initialize the catalogue and launch at `http://localhost:8501`.*
+   *The application will automatically initialize the catalogue and launch in your default browser at `http://127.0.0.1:8000` with instant loading, responsive UI, and verified posters.*
 
-4. **(Optional) Run FastAPI REST Backend in microservice mode:**
+4. **(Optional) Run Streamlit Companion UI or microservice mode:**
    ```bash
-   uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
+   streamlit run frontend/streamlit_app.py
    ```
    *Access interactive Swagger UI documentation at `http://localhost:8000/docs`.*
 
@@ -201,8 +203,8 @@ Start the Web UI, FastAPI Backend, and PostgreSQL database with a single command
 ```bash
 docker compose up --build
 ```
-- **Streamlit Web UI:** [http://localhost:8501](http://localhost:8501)
-- **FastAPI Documentation:** [http://localhost:8000/docs](http://localhost:8000/docs)
+- **Web UI & REST API:** [http://localhost:8000](http://localhost:8000)
+- **Interactive API Documentation:** [http://localhost:8000/docs](http://localhost:8000/docs)
 - **PostgreSQL Database:** `localhost:5432`
 
 ---
@@ -213,7 +215,7 @@ Run the full automated test suite (unit tests, recommender tests, and API integr
 ```bash
 pytest tests/ -v
 ```
-All **48 automated tests** will execute and validate the pipeline in ~2.5 seconds.
+All **49 automated tests** will execute and validate the pipeline in ~4.5 seconds.
 
 ---
 
