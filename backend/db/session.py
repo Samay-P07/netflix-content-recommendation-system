@@ -33,10 +33,13 @@ try:
 except Exception as e:
     logger.warning("PostgreSQL unavailable (%s). Falling back to local SQLite engine.", e)
     _db_available = False
-    dev_db_path = os.path.join(
-        os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
-        "cinematch_dev.db"
-    )
+    if os.getenv("VERCEL") or os.getenv("AWS_LAMBDA_FUNCTION_NAME"):
+        dev_db_path = "/tmp/cinematch_dev.db"
+    else:
+        dev_db_path = os.path.join(
+            os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
+            "cinematch_dev.db"
+        )
     engine = create_engine(
         f"sqlite:///{dev_db_path}",
         connect_args={"check_same_thread": False}
