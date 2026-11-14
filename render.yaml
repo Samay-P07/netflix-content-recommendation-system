@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: cinematch
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
+    plan: free
+    autoDeploy: true
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: HOST
+        value: 0.0.0.0
