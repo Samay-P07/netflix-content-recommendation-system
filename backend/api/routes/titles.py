@@ -6,7 +6,7 @@ from typing import Optional, List
 from fastapi import APIRouter, Query, HTTPException, status
 
 from backend.services.catalog_service import CatalogService
-from backend.schemas.titles import PaginatedTitlesResponse, TitleDetail, TitleSearchResponse
+from backend.schemas.titles import PaginatedTitlesResponse, TitleDetail, TitleSearchResponse, TitleSummary
 
 router = APIRouter(prefix="/titles", tags=["Titles & Search"])
 
@@ -54,6 +54,45 @@ def list_genres():
     """Returns all available distinct genres in the catalog."""
     catalog = CatalogService.get_instance()
     return catalog.get_available_genres()
+
+
+@router.get("/popular", response_model=List[TitleSummary])
+def get_popular_highlights(limit: int = Query(8, ge=1, le=20)):
+    """Returns curated popular blockbuster titles with verified high-res artwork."""
+    catalog = CatalogService.get_instance()
+    popular_names = [
+        "Inception",
+        "Squid Game",
+        "Stranger Things",
+        "The Witcher",
+        "Peaky Blinders",
+        "Lucifer",
+        "Sex Education",
+        "Narcos",
+        "Breaking Bad",
+        "Midnight Mass",
+        "Ganglands",
+        "The Box"
+    ]
+    items = []
+    for name in popular_names:
+        title_obj = catalog.get_title(name)
+        if title_obj:
+            items.append(TitleSummary(
+                show_id=title_obj.show_id,
+                title=title_obj.title,
+                type=title_obj.type,
+                director=title_obj.director,
+                country=title_obj.country,
+                release_year=title_obj.release_year,
+                rating=title_obj.rating,
+                duration=title_obj.duration,
+                listed_in=title_obj.listed_in,
+                poster_url=title_obj.poster_url
+            ))
+            if len(items) >= limit:
+                break
+    return items
 
 
 @router.get("/{title_id}", response_model=TitleDetail)

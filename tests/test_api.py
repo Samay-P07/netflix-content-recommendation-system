@@ -43,8 +43,18 @@ def test_api_search_fast():
     assert response.status_code == 200
     data = response.json()
     assert data["total"] >= 1
-    titles = [item["title"] for item in data["items"]]
-    assert any("Stranger Things" in t for t in titles)
+
+
+def test_api_popular_titles():
+    response = client.get("/titles/popular?limit=6")
+    assert response.status_code == 200
+    data = response.json()
+    assert len(data) == 6
+    assert "title" in data[0]
+    assert "poster_url" in data[0]
+    assert data[0]["poster_url"] != ""
+    titles = [item["title"] for item in data]
+    assert any("Stranger Things" in t or "Inception" in t for t in titles)
 
 
 def test_api_title_details_and_not_found():

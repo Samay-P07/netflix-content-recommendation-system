@@ -13,21 +13,21 @@
   <header class="navbar">
     <div class="nav-left">
       <a class="brand-logo" href="#">
-        🎬 Cine<span>Match</span>
+        <span class="brand-icon">🎬</span><span class="brand-text">Cine<span class="brand-accent">Match</span></span>
       </a>
-      <ul class="nav-links">
-        <li><a class="nav-link active" href="#recsSection">Recommendations</a></li>
-        <li><a class="nav-link" href="#popularSection">Popular</a></li>
-        <li><a class="nav-link" href="#catalogSection">Catalogue Explorer</a></li>
-        <li><a class="nav-link" onclick="openInsightsModal()">Analytics</a></li>
-        <li><a class="nav-link" onclick="openMethodologyModal()">Methodology</a></li>
-      </ul>
+      <nav class="nav-links">
+        <a class="nav-link active" href="#recsSection">Recommendations</a>
+        <a class="nav-link" href="#popularSection">Popular</a>
+        <a class="nav-link" href="#catalogSection">Browse All</a>
+        <a class="nav-link" onclick="openInsightsModal()">Analytics</a>
+        <a class="nav-link" onclick="openMethodologyModal()">Methodology</a>
+      </nav>
     </div>
 
     <div class="nav-right">
       <div class="search-box">
         <span class="search-icon">🔍</span>
-        <input type="text" id="searchInput" class="search-input" placeholder="Search Inception, Stranger Things, Narcos..." />
+        <input type="text" id="searchInput" class="search-input" placeholder="Search Inception, Squid Game, Narcos..." />
       </div>
 
       <button class="btn-watchlist-nav" onclick="openWatchlistModal()">
@@ -95,9 +95,9 @@
         </select>
 
         <select id="sortFilter" class="select-ctrl">
+          <option value="year_desc">Release Year (Newest First)</option>
           <option value="title_asc">Title (A – Z)</option>
           <option value="title_desc">Title (Z – A)</option>
-          <option value="year_desc">Release Year (Newest First)</option>
           <option value="year_asc">Release Year (Oldest First)</option>
         </select>
 

@@ -43,10 +43,13 @@ CURATED_POSTERS: Dict[str, str] = {
     "stranger things": "https://m.media-amazon.com/images/M/MV5BMjEzMDAxOTUyMV5BMl5BanBnXkFtZTgwNzAxMzYzOTE@._V1_QL75_UX380_CR0,0,380,562_.jpg",
     "interstellar": "https://m.media-amazon.com/images/M/MV5BYzdjMDAxZGItMjI2My00ODA1LTlkNzItOWFjMDU5ZDJlYWY3XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
     "the dark knight": "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_QL75_UX380_CR0,0,380,562_.jpg",
-    "the witcher": "https://m.media-amazon.com/images/M/MV5BN2FiOWU4YzYtMzZiOS00MzcyLTlkOGEtKQ@@._V1_QL75_UX380_CR0,0,380,562_.jpg",
+    "the witcher": "https://m.media-amazon.com/images/M/MV5BOTQzMzNmMzUtODgwNS00YTdhLTg5N2MtOWU1YTc4YWY3NjRlXkEyXkFqcGc@._V1_QL75_UY562_CR35,0,380,562_.jpg",
     "narcos": "https://m.media-amazon.com/images/M/MV5BNmFjODU3YzgtMGUwNC00ZGI3LWFkZjQtMjkxZDc3NmQ1MzFiXkEyXkFqcGc@._V1_QL75_UX380_CR0,4,380,562_.jpg",
     "breaking bad": "https://m.media-amazon.com/images/M/MV5BMzU5ZGYzNmQtMTdhYy00OGRiLTg0NmQtYjVjNzliZTg1ZGE4XkEyXkFqcGc@._V1_QL75_UX380_CR0,4,380,562_.jpg",
-    "peaky blinders": "https://m.media-amazon.com/images/M/MV5BM2NlYTFlNmYtOTlhNi00N2Y4LWJmOGEtZGU1MTMzNzczNDY5XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
+    "peaky blinders": "https://m.media-amazon.com/images/M/MV5BOGM0NGY3ZmItOGE2ZC00OWIxLTk0N2EtZWY4Yzg3ZDlhNGI3XkEyXkFqcGc@._V1_QL75_UX380_CR0,4,380,562_.jpg",
+    "squid game": "https://m.media-amazon.com/images/M/MV5BMDcxY2VkMDQtYTM5NC00Yzk4LTkyOTAtZjg1NmZhMTA0Nzg2XkEyXkFqcGc@._V1_QL75_UY562_CR7,0,380,562_.jpg",
+    "lucifer": "https://m.media-amazon.com/images/M/MV5BNDJjMzc4NGYtZmFmNS00YWY3LThjMzUtYzM0ZDI3OTk3N2FiXkEyXkFqcGc@._V1_QL75_UX380_CR0,4,380,562_.jpg",
+    "sex education": "https://m.media-amazon.com/images/M/MV5BODg1OTgyOTUtYmQzYi00YjlkLTkyOTgtYTM0Nzg4NDcyOGY1XkEyXkFqcGc@._V1_QL75_UX380_CR0,4,380,562_.jpg",
     "midnight mass": "https://m.media-amazon.com/images/M/MV5BYWFjMDM5MzgtZWI3OC00ZWRmLThlNTktN2ZkMTc3ZTA5NGEzXkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
     "ganglands": "https://m.media-amazon.com/images/M/MV5BYWJkOWM3NDQtYmQ0Mi00MzliLTg4YzctNDk2ZjY4NDQwYTRmXkEyXkFqcGc@._V1_QL75_UX380_CR0,4,380,562_.jpg",
     "the box": "https://m.media-amazon.com/images/M/MV5BMTI4MDA5NjIwM15BMl5BanBnXkFtZTcwNTA2MjY0Mg@@._V1_QL75_UX380_CR0,1,380,562_.jpg",
@@ -54,7 +57,8 @@ CURATED_POSTERS: Dict[str, str] = {
     "clash of the titans": "https://m.media-amazon.com/images/M/MV5BMTYxNjg4MzU5OV5BMl5BanBnXkFtZTcwOTA3NTUwMw@@._V1_QL75_UX380_CR0,0,380,562_.jpg",
     "dragonheart: battle for the heartfire": "https://m.media-amazon.com/images/M/MV5BZTEyMmE0OTgtMzkzOS00ZTVkLWI3MjMtYmIyOTM0YTg3OWQ2XkEyXkFqcGc@._V1_QL75_UY562_CR7,0,380,562_.jpg",
     "seventh son": "https://m.media-amazon.com/images/M/MV5BMjA4NjA3ODc0Nl5BMl5BanBnXkFtZTgwNTQ2Njg0NDE@._V1_SX300.jpg",
-    "cory carson": "https://m.media-amazon.com/images/M/MV5BZDhjZWVjYTYtYjU4Yy00ODhjLWIxN2EtNjc1YzAzZDAxNGYzXkEyXkFqcGc@._V1_SX300.jpg"
+    "cory carson christmas": "https://m.media-amazon.com/images/M/MV5BZDQyODljMTItMDk2YS00ZDMzLTg2NmUtY2FkOTQxNzQzMmNjXkEyXkFqcGc@._V1_UY562_CR11,0,380,562_.jpg",
+    "cory carson": "https://m.media-amazon.com/images/M/MV5BZDQyODljMTItMDk2YS00ZDMzLTg2NmUtY2FkOTQxNzQzMmNjXkEyXkFqcGc@._V1_UY562_CR11,0,380,562_.jpg"
 }
 
 GENRE_COLORS = {
@@ -127,29 +131,84 @@ def get_poster_url(title: str, year: Optional[int] = None, genre: str = "") -> s
             _MEMORY_CACHE[cache_key] = cur_url
             return cur_url
 
-    # 3. Clean search term for OMDb (strip emojis, parentheses, prefixes like 'A Go! Go!')
-    search_query = re.sub(r'\(.*?\)', '', clean_t).strip()
-    search_query = re.sub(r'^[A-Za-z]\s+Go!\s+Go!\s+', '', search_query, flags=re.IGNORECASE)
+def search_omdb_variations(title: str, year: Optional[int] = None) -> Optional[str]:
+    """
+    Performs intelligent multi-variation search against OMDb to locate official IMDb posters.
+    Handles prefixes ('A Go! Go!', '#', '@'), subtitles, punctuation, and release years.
+    """
+    clean = re.sub(r'\(.*?\)', '', str(title)).strip()
+    clean = re.sub(r'^[#@!]+', '', clean).strip()
+    clean = re.sub(r'^[A-Za-z]\s+Go!\s+Go!\s+', '', clean, flags=re.IGNORECASE).strip()
 
-    params = {"t": search_query, "apikey": "trilogy"}
-    if year:
-        params["y"] = int(year)
+    variations = [clean]
+    if ':' in clean:
+        variations.append(clean.split(':')[0].strip())
+    if ' - ' in clean:
+        variations.append(clean.split(' - ')[0].strip())
+    no_punct = re.sub(r'[^a-zA-Z0-9\s]', ' ', clean).strip()
+    if no_punct and no_punct not in variations:
+        variations.append(no_punct)
 
-    try:
-        with httpx.Client(timeout=2.0) as client:
-            resp = client.get("https://www.omdbapi.com/", params=params)
-            if resp.status_code == 200:
-                data = resp.json()
-                poster = data.get("Poster")
-                if poster and poster != "N/A" and poster.startswith("http"):
-                    _MEMORY_CACHE[cache_key] = poster
-                    if len(_MEMORY_CACHE) % 5 == 0:
-                        _save_cache()
-                    return poster
-    except Exception:
-        pass
+    for q in variations:
+        for y in [year, None]:
+            params = {'t': q, 'apikey': 'trilogy'}
+            if y:
+                try:
+                    params['y'] = int(y)
+                except Exception:
+                    pass
+            try:
+                with httpx.Client(timeout=2.0) as client:
+                    resp = client.get("https://www.omdbapi.com/", params=params)
+                    if resp.status_code == 200:
+                        data = resp.json()
+                        p = data.get("Poster")
+                        if p and p != "N/A" and p.startswith("http"):
+                            return p
+            except Exception:
+                pass
+    return None
 
-    # 4. Fallback to guaranteed SVG poster data URI
-    svg_data = generate_svg_poster(clean_t, genre, str(year or ""))
-    _MEMORY_CACHE[cache_key] = svg_data
-    return svg_data
+
+def get_poster_url(title: str, year: Optional[int] = None, genre: str = "") -> str:
+    """
+    Returns official IMDb/OMDb poster image URL, or guaranteed SVG vector poster.
+    """
+    if not title:
+        return generate_svg_poster("Featured Title", genre, str(year or 2021))
+
+    clean_t = title.strip()
+    y_str = str(year) if year else ""
+    cache_key = f"{clean_t.lower()}_{y_str}"
+
+    # 1. Check memory cache (only if valid http URL)
+    if cache_key in _MEMORY_CACHE and _MEMORY_CACHE[cache_key].startswith("http"):
+        return _MEMORY_CACHE[cache_key]
+
+    # Reload from disk cache if not in memory
+    if os.path.exists(CACHE_FILE):
+        try:
+            with open(CACHE_FILE, "r", encoding="utf-8") as f:
+                disk_cache = json.load(f)
+                _MEMORY_CACHE.update(disk_cache)
+                if cache_key in _MEMORY_CACHE and _MEMORY_CACHE[cache_key].startswith("http"):
+                    return _MEMORY_CACHE[cache_key]
+        except Exception:
+            pass
+
+    # 2. Check curated dictionary
+    t_lower = clean_t.lower()
+    for cur_key, cur_url in CURATED_POSTERS.items():
+        if cur_key in t_lower:
+            _MEMORY_CACHE[cache_key] = cur_url
+            return cur_url
+
+    # 3. Intelligent multi-variation query to OMDb
+    found_poster = search_omdb_variations(clean_t, year)
+    if found_poster:
+        _MEMORY_CACHE[cache_key] = found_poster
+        _save_cache()
+        return found_poster
+
+    # 4. Fallback to guaranteed SVG poster data URI (do NOT persist SVG in cache permanently)
+    return generate_svg_poster(clean_t, genre, y_str)

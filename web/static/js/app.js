@@ -185,10 +185,20 @@ async function loadRecommendations(title) {
 // 3. Load Popular Movies Shelf
 async function loadPopularShelf() {
   try {
-    const res = await fetch(`${API_BASE}/titles?type=Movie&sort_by=year_desc&page=1&page_size=6`);
-    if (!res.ok) return;
-    const data = await res.json();
-    popularGrid.innerHTML = (data.items || []).map(m => createCardHtml(m, false)).join("");
+    const res = await fetch(`${API_BASE}/titles/popular?limit=8`);
+    if (res.ok) {
+      const items = await res.json();
+      if (Array.isArray(items) && items.length > 0) {
+        popularGrid.innerHTML = items.map(m => createCardHtml(m, false)).join("");
+        return;
+      }
+    }
+    // Fallback to recent movies if popular endpoint returns empty
+    const fallbackRes = await fetch(`${API_BASE}/titles?type=Movie&sort_by=year_desc&page=1&page_size=8`);
+    if (fallbackRes.ok) {
+      const fallbackData = await fallbackRes.json();
+      popularGrid.innerHTML = (fallbackData.items || []).map(m => createCardHtml(m, false)).join("");
+    }
   } catch (err) {
     console.error("Could not load popular titles:", err);
   }
