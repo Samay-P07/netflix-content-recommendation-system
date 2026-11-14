@@ -432,6 +432,16 @@ window.closeModal = function() {
   modalBackdrop.classList.remove("open");
 };
 
+// Global ESC key to close open modals and search suggestions
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    closeModal();
+    if (searchSuggestions) {
+      searchSuggestions.classList.remove("show");
+    }
+  }
+});
+
 // Search Autocomplete & Instant Dropdown Suggestions
 let searchTimer = null;
 let currentSuggestions = [];
